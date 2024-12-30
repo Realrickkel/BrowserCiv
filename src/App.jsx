@@ -14,6 +14,7 @@ const createInitialGrid = () => {
       row.push({
         terrain: 'grass', // Example: grass, water, mountain
         unit: null, // Example: player's unit or AI unit
+        isSelected: false, // Track if the tile is selected
       });
     }
     grid.push(row);
@@ -28,6 +29,13 @@ function App() {
 
   // Handle tile selection
   const handleTileClick = (row, col) => {
+    const newGrid = grid.map((gridRow, rowIndex) =>
+      gridRow.map((tile, colIndex) => ({
+        ...tile,
+        isSelected: rowIndex === row && colIndex === col, // Only the clicked tile is selected
+      }))
+    );
+    setGrid(newGrid);
     const tile = grid[row][col];
     if (tile.unit) {
       console.log(`Selected a unit at (${row}, ${col})`);
@@ -51,7 +59,7 @@ function App() {
         {row.map((tile, colIndex) => (
           <div
             key={`${rowIndex}-${colIndex}`}
-            className={`grid-tile ${tile.terrain}`}
+            className={`grid-tile ${tile.terrain} ${tile.isSelected ? 'selected' : ''}`}
             onClick={() => handleTileClick(rowIndex, colIndex)}
           >
             {tile.unit ? <span className="unit">U</span> : null}
@@ -77,5 +85,3 @@ function App() {
 }
 
 export default App;
-
-

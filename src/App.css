@@ -1,4 +1,3 @@
-
 .grid-row {
   display: flex;
 }
@@ -23,6 +22,10 @@
 
 .grid-tile.mountain {
   background-color: #a9a9a9;
+}
+
+.grid-tile.selected {
+  background-color: #ffc403; /* Highlight selected tile */
 }
 
 .unit {
