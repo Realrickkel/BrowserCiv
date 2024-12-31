@@ -1,6 +1,5 @@
 // Basic Structure for a Civilization-like Game in ReactJS
 import React, { useState, useEffect } from 'react';
-import './App.css';
 
 // Define a grid size for the game
 const GRID_SIZE = 10;
@@ -84,16 +83,19 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <h1>Civilization-like Game</h1>
-      <div className="game-grid">{renderGrid()}</div>
-      <button onClick={endTurn}>End Turn</button>
-      <p>Current Turn: {turn}</p>
-      {selectedTile && (
-        <p>
-          Selected Tile: ({selectedTile.row}, {selectedTile.col})
-        </p>
-      )}
+    <div className="App flex bg-red-700 justify-center items-center">
+      <div className='bg-green-500'>
+        <h1 className='text-3xl '>Civilization-like Game</h1>
+        <div className="game-grid ">{renderGrid()}</div>
+        <button onClick={endTurn}>End Turn</button>
+        <p className=''>Current Turn: {turn}</p>
+        {selectedTile && (
+          <p className=''>
+            Selected Tile: ({selectedTile.row}, {selectedTile.col})
+          </p>
+        )}
+      </div>
+      
     </div>
   );
 }
