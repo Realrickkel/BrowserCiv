@@ -4,18 +4,29 @@ import './App.css';
 
 // Define a grid size for the game
 const GRID_SIZE = 10;
-var numberGeneration = 0;
-var terrainGen = 'grass';
 
-// Initial state for the grid
-const createInitialGrid = () => {
+// Generate a noise map using a seeded random function
+const generateNoiseMap = (seed) => {
+  const randomNoise = (x, y) => {
+    const newSeed = (x + seed) * 1000 + (y + seed) * 10000;
+    return Math.abs(Math.sin(newSeed) * 10000 % 1); // Generate pseudo-random noise value
+  };
+
   const grid = [];
   for (let i = 0; i < GRID_SIZE; i++) {
     const row = [];
     for (let j = 0; j < GRID_SIZE; j++) {
-      getRandomInt()
-      row.push({  
-        terrain: terrainGen, // Example: grass, water, mountain
+      const value = randomNoise(i, j); // Generate noise value
+      let terrain;
+      if (value < 0.3) {
+        terrain = 'water';
+      } else if (value < 0.9) {
+        terrain = 'grass';
+      } else {
+        terrain = 'mountain';
+      }
+      row.push({
+        terrain,
         unit: null, // Example: player's unit or AI unit
         isSelected: false, // Track if the tile is selected
       });
@@ -25,19 +36,9 @@ const createInitialGrid = () => {
   return grid;
 };
 
-function getRandomInt() {
-  numberGeneration = Math.floor(Math.random() * 3);
-  if(numberGeneration == 0){
-    terrainGen = 'grass';
-  } else if(numberGeneration == 1){
-    terrainGen = 'water';
-  } else if(numberGeneration == 2){
-    terrainGen = 'mountain';
-  }
-}
-
 function App() {
-  const [grid, setGrid] = useState(createInitialGrid());
+  const [seed, setSeed] = useState(Math.random()); // Seed for consistent randomness
+  const [grid, setGrid] = useState(generateNoiseMap(seed));
   const [turn, setTurn] = useState(0); // Tracks the current turn
   const [selectedTile, setSelectedTile] = useState(null); // Selected tile
 
@@ -63,10 +64,6 @@ function App() {
   const endTurn = () => {
     console.log(`Turn ${turn} ended.`);
     setTurn(turn + 1);
-    // Placeholder: Update AI or other game mechanics here
-    if(turn > 10){
-      console.log('Game Over')
-    }
   };
 
   // Render the grid
