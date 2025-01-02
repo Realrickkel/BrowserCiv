@@ -83,8 +83,8 @@ function App() {
   };
 
   return (
-    <div className="App flex bg-red-700 justify-center items-center">
-      <div className='bg-green-500'>
+    <div className="App w-screen h-screen flex justify-center items-center">
+      <div className=''>
         <h1 className='text-3xl '>Civilization-like Game</h1>
         <div className="game-grid ">{renderGrid()}</div>
         <button onClick={endTurn}>End Turn</button>
