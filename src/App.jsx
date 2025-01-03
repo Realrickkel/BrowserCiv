@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 // Define a grid size for the game
-const GRID_SIZE = 10;
+const GRID_SIZE = 15;
 
 // Generate a noise map using a seeded random function
 const generateNoiseMap = (seed) => {
@@ -85,13 +85,20 @@ function App() {
   return (
     <div className="App w-screen h-screen flex justify-center items-center">
       <div className=''>
-        <h1 className='text-3xl '>Civilization-like Game</h1>
+        <h1 className='text-3xl my-2'>Browser Civilization</h1>
         <div className="game-grid ">{renderGrid()}</div>
         <button onClick={endTurn}>End Turn</button>
         <p className=''>Current Turn: {turn}</p>
         {selectedTile && (
           <p className=''>
             Selected Tile: ({selectedTile.row}, {selectedTile.col})
+          </p>
+        )}
+        {selectedTile && (
+          <p className=''>
+            Terrain: ({grid.map((row, rowIndex) => (
+              row.terrain
+            ))})
           </p>
         )}
       </div>
