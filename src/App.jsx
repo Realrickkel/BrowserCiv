@@ -56,7 +56,7 @@ function App() {
     } else {
       console.log(`Selected an empty tile at (${row}, ${col})`);
     }
-    setSelectedTile({ row, col });
+    setSelectedTile({ row, col, terrain: tile.terrain });
   };
 
   // End the current player's turn
@@ -96,9 +96,7 @@ function App() {
         )}
         {selectedTile && (
           <p className=''>
-            Terrain: ({grid.map((row, rowIndex) => (
-              row.terrain
-            ))})
+            Terrain: {selectedTile.terrain}
           </p>
         )}
       </div>
