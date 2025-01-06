@@ -99,6 +99,16 @@ function App() {
             Terrain: {selectedTile.terrain}
           </p>
         )}
+        {!selectedTile && (
+          <>
+            <p className=''>
+              Selected Tile: nothing selected
+            </p>
+            <p className=''>
+              Terrain: nothing selected
+            </p>
+          </>
+        )}
       </div>
       
     </div>
