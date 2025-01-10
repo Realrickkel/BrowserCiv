@@ -1,4 +1,3 @@
-// Basic Structure for a Civilization-like Game in ReactJS
 import React, { useState, useEffect } from 'react';
 
 // Define a grid size for the game
@@ -28,6 +27,7 @@ const generateNoiseMap = (seed) => {
         terrain,
         unit: null, // Example: player's unit or AI unit
         isSelected: false, // Track if the tile is selected
+        city: null, // Track if the tile has a city
       });
     }
     grid.push(row);
@@ -40,6 +40,7 @@ function App() {
   const [grid, setGrid] = useState(generateNoiseMap(seed));
   const [turn, setTurn] = useState(0); // Tracks the current turn
   const [selectedTile, setSelectedTile] = useState(null); // Selected tile
+  const [settlerPosition, setSettlerPosition] = useState({ row: 0, col: 0 }); // Initial settler position
 
   // Handle tile selection
   const handleTileClick = (row, col) => {
@@ -59,6 +60,30 @@ function App() {
     setSelectedTile({ row, col, terrain: tile.terrain });
   };
 
+  // Move the settler to a new position
+  const moveSettler = (newRow, newCol) => {
+    if (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+      setSettlerPosition({ row: newRow, col: newCol });
+    }
+  };
+
+  // Settle the settler to create a city
+  const settle = () => {
+    const { row, col } = settlerPosition;
+    const newGrid = [...grid];
+    newGrid[row][col].city = 'City';
+    newGrid[row][col].unit = null; // Remove settler after settling
+    setGrid(newGrid);
+  };
+
+  // Build a unit in the city
+  const buildUnit = (unitType) => {
+    const { row, col } = settlerPosition;
+    const newGrid = [...grid];
+    newGrid[row][col].unit = unitType;
+    setGrid(newGrid);
+  };
+
   // End the current player's turn
   const endTurn = () => {
     console.log(`Turn ${turn} ended.`);
@@ -75,7 +100,12 @@ function App() {
             className={`grid-tile ${tile.terrain} ${tile.isSelected ? 'selected' : ''}`}
             onClick={() => handleTileClick(rowIndex, colIndex)}
           >
-            {tile.unit ? <span className="unit">U</span> : null}
+            {settlerPosition.row === rowIndex && settlerPosition.col === colIndex ? (
+              <span className="unit">Settler</span>
+            ) : tile.unit ? (
+              <span className="unit">{tile.unit}</span>
+            ) : null}
+            {tile.city ? <span className="city">{tile.city}</span> : null}
           </div>
         ))}
       </div>
@@ -109,8 +139,20 @@ function App() {
             </p>
           </>
         )}
+        <div>
+          <h2>Settler Actions</h2>
+          <button onClick={() => moveSettler(settlerPosition.row - 1, settlerPosition.col)}>Move Up</button>
+          <button onClick={() => moveSettler(settlerPosition.row + 1, settlerPosition.col)}>Move Down</button>
+          <button onClick={() => moveSettler(settlerPosition.row, settlerPosition.col - 1)}>Move Left</button>
+          <button onClick={() => moveSettler(settlerPosition.row, settlerPosition.col + 1)}>Move Right</button>
+          <button onClick={settle}>Settle</button>
+        </div>
+        <div>
+          <h2>City Actions</h2>
+          <button onClick={() => buildUnit('Melee Fighter')}>Build Melee Fighter</button>
+          <button onClick={() => buildUnit('Crossbowman')}>Build Crossbowman</button>
+        </div>
       </div>
-      
     </div>
   );
 }
