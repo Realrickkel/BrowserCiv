@@ -90,7 +90,7 @@ function App() {
     setTurn(turn + 1);
   };
 
-  // Render the grid
+  // Render the grid test
   const renderGrid = () => {
     return grid.map((row, rowIndex) => (
       <div className="grid-row" key={rowIndex}>
